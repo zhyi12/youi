@@ -3,6 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<groupId>org.youi.framework</groupId>
 	<artifactId>youi-framework</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -64,7 +65,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 <!-- 		<nexus.root>http://192.168.1.143:8081/nexus</nexus.root> -->
-		<nexus.root>http://59.172.208.5/nexus</nexus.root>
+		<nexus.root>http://192.168.80.131:8081/nexus</nexus.root>
 		<junit.version>4.8.2</junit.version>
 		<aspectj.version>1.6.9</aspectj.version>
 		<antlr.version>2.7.6</antlr.version>
@@ -73,11 +74,6 @@
 		<springframework.webflow.version>2.3.1.RELEASE</springframework.webflow.version>
 			
 		<!-- hibernate 相关 -->
-<!-- 		<ejb3-persistence.version>1.0.2.GA</ejb3-persistence.version> -->
-<!-- 		<hibernate-core.version>3.3.1.GA</hibernate-core.version> -->
-<!-- 		<hibernate-annotations.version>3.4.0.GA</hibernate-annotations.version> -->
-<!-- 		<hibernate-commons-annotations.version>3.1.0.GA</hibernate-commons-annotations.version> -->
-<!-- 		<hibernate-validator.version>3.1.0.GA</hibernate-validator.version> -->
 		<ejb3-persistence.version>1.0.2.GA</ejb3-persistence.version>
 		<hibernate-core.version>3.3.1.GA</hibernate-core.version>
 		<hibernate-annotations.version>3.4.0.GA</hibernate-annotations.version>
@@ -608,6 +604,7 @@
 		
 		<module>modules/job</module>
 		<module>modules/query</module> -->
+		<module>modules/core</module>
 	</modules>
 
 	<build>
@@ -632,6 +629,18 @@
 			</extension>
 			<!-- end - needed for deploying to repository using webdav -->
 		</extensions>
+		
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>sonar-maven-plugin</artifactId>
+					<version>2.6</version>
+					
+				</plugin>
+			</plugins>
+			
+		</pluginManagement>
 	</build>
-	<groupId>org.youi.framework</groupId>
+	
 </project>
