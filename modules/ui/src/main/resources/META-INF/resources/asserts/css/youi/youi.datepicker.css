@@ -1,0 +1,82 @@
+@CHARSET "UTF-8";
+
+.youi-datepicker{
+	padding:8px;
+}
+
+.youi-datepicker .d-panel{
+	display:none;
+}
+
+.youi-datepicker .d-panel .month,
+.youi-datepicker .d-panel .year{
+	padding:5px;
+	text-align:center;
+}
+
+.youi-datepicker .panel-date a,
+.youi-datepicker .panel-date a:active,
+.youi-datepicker .panel-date a:hover{
+	color:black;
+	cursor:pointer;
+	padding:5px 8px;
+	cursor:pointer;
+	border-radius:5px;
+}
+
+.youi-datepicker .panel-date a.other-day,
+.youi-datepicker .panel-date a.other-day:active,
+.youi-datepicker .panel-date a.other-day:hover{
+	color:silver;
+}
+
+.youi-datepicker .panel-date a.small{
+	padding-left:12px;
+	padding-right:12px;
+	font-size: 100%;
+}
+
+.youi-datepicker .panel-date a.today{
+	
+}
+
+.youi-datepicker .panel-date a.selected{
+	color:white;
+	background-color:#0044cc!important;
+}
+
+.youi-datepicker .datepicker-row{
+	display: table;
+	width:100%;
+}
+.youi-datepicker .datepicker-row .cell{
+	display: table-cell;
+}
+
+.youi-datepicker .datepicker-row .cell.addon{
+	width:20px;
+	padding:2px 5px;
+	cursor:pointer;
+}
+
+.youi-datepicker .datepicker-label span{
+	line-height:20px;
+	text-align:center;
+	display:none;
+}
+
+.youi-datepicker .datepicker-label span:hover,
+.youi-datepicker .youi-icon:hover,	
+.youi-datepicker .panel-date a:hover,
+.youi-datepicker .d-panel .month:hover,
+.youi-datepicker .d-panel .year:hover{
+	background-color: #eee;
+	border-radius:5px;
+}
+
+.youi-datepicker .panel-date th,
+.youi-datepicker .panel-date td{
+	text-align:center;
+	padding:2px 0px;
+}
+

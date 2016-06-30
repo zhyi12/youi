@@ -1,0 +1,220 @@
+@CHARSET "UTF-8";
+
+.youi-webim{
+	display:none;
+	z-index:1065;
+	border:1px solid silver;
+	width:800px;
+	max-width: 800px;
+	height:600px;
+	background:#E8F5FC;
+	position:absolute;	
+}
+.youi-webim .close{
+	 padding: 4px;
+}
+
+.webim-chat-users{
+	width:120px;
+	position:absolute;
+	left:1px;
+	top:1px;
+	height:596px;
+	display:none;
+	background:#6BA8CD;
+	border-radius: 5px 0px 0px 5px;
+	padding-right:2px!important;
+}
+
+.webim-chat-users .chat-user{
+	cursor:pointer;
+}
+
+.youi-webim .webim-chat-users .chat-user.active>a{
+	background:#E8F5FC!important;
+	color:green!important;
+}
+
+.youi-webim.mult-user-chat .webim-chat-users{
+	display:block;
+}
+
+.youi-webim.mult-user-chat .webim-title{
+	background: #DBF0ED;
+	color:black;
+}
+
+.youi-webim.mult-user-chat .webim-title,.youi-webim.mult-user-chat .popover-content{
+	padding-left:128px;
+}
+  
+
+.youi-webim .webim-tools{
+	height:30px;
+	padding:3px;
+}
+
+.youi-webim .webim-chat-msgs{
+	height:300px;
+	overflow-y:auto;
+	border:1px solid #efefef;
+	padding:3px;
+	background:white;
+}
+
+
+.youi-webim .webim-time{
+	text-align:center;
+	color:silver;
+}
+
+.youi-webim .webim-chat-msgs .webim-chat-msg{
+	float: left;
+    width: 100%;
+    padding: 2px;
+}
+
+.youi-webim .webim-chat-msgs .webim-chat-msg .user-header{
+	height:40px;
+	width:40px;
+	padding:3px;
+	
+	font-size: 32px;
+    text-align: center;
+}
+
+.youi-webim .webim-chat-msgs .webim-chat-msg.send .user-header{
+	float:right;
+}
+
+.youi-webim .webim-chat-msgs .webim-chat-msg.receive .user-header{
+	float:left;
+}
+
+
+.youi-webim .webim-chat-msgs .webim-chat-msg .msg>span{
+	padding: 5px;
+    border: 1px solid #efefef;
+    background: #eeeffe;
+    border-radius: 5px;
+    display: block;
+    line-height: 22px;
+}
+
+.youi-webim .webim-chat-msgs .webim-chat-msg.send .msg{
+	padding-right: 45px; 
+}
+
+.youi-webim .webim-chat-msgs .webim-chat-msg.send .msg>span{
+	float: right;
+}
+
+.youi-webim .webim-chat-msgs .webim-chat-msg.send .msg-arrow{
+	border-color: transparent;
+	left: 0;
+	margin-top: 4px;
+	border-style: solid;
+	border-width: 8px 8px 3px 3px ;
+	border-right-color: #EEECEE;
+	border-radius: 2px;
+}
+
+.youi-webim .webim-chat-msgs .webim-chat-msg.receive .msg{
+	padding-left: 45px; 
+}
+
+
+.youi-webim .webim-chat-tools{
+	height:30px;
+	padding:3px;
+}
+.youi-webim .webim-editor{
+	height:150px;
+	border:1px solid #efefef;
+	padding:3px;
+	background:white;
+	overflow-y:auto;
+}
+.youi-webim .webim-buttons{
+	height:30px;
+	padding:3px;
+}
+
+
+.webim-moving{
+	z-index:1067;
+	position:absolute;
+	border:1px dotted silver;
+}
+/***************************/		
+
+
+.popover-webim-friends{
+	padding:2px;
+}
+
+.webim-friends-title,
+.webim-title{
+	background:#169ADA;
+	color:white;
+}
+
+.popover-webim{
+	background:#E8F5FC;
+	padding:0px;
+}
+
+
+.popover-webim .webim-received.icon-comment-alt{
+	
+}
+
+.popover-webim-container{
+	color:black;
+	width:260px;
+	height:600px;
+	overflow-y: auto;
+}
+
+.webim-user{
+	display: flex;
+	padding:5px 0px;
+	border-bottom:1px solid #D8E4EB;
+}
+
+.webim-user:hover{
+	background:#f9f2d5;
+}
+
+.webim-user-header{
+	width:40px;
+	height:40px;
+	border:1px solid #D8E4EB;
+	border-radius:5px;
+	font-size:38px;
+	text-align:center;
+}
+
+.webim-user-info{
+	padding-left:5px;
+}
+
+.webim-chat-content{
+	border:1px solid silver;
+	height:300px;
+	border-radius:5px;
+}
+
+.webim-chat-bar{
+	padding:5px;
+}
+
+.webim-chat-editor{
+	border:1px solid silver;
+	height:100px;
+	border-radius:5px;
+}
+
+.webim-chat-buttons{
+	padding:5px 0px;
+}

@@ -1,0 +1,126 @@
+@CHARSET "UTF-8";
+
+.youi-tree{
+	position:relative;
+}
+
+.youi-tree ul{
+	padding:0;
+	margin:0;
+	list-style: none;
+}
+
+.youi-tree>ul{
+	padding-left: 15px;
+}
+
+
+.youi-tree li.treeNode.root{
+	padding-left:2px;
+}
+
+.youi-tree li.treeNode{
+	padding-left:16px;
+	margin: 0;
+	list-style: none;
+}
+
+.youi-tree li.treeNode>span>a,
+.youi-tree li.treeNode>span>a:active{
+	color:black;
+	text-decoration: none;
+}
+
+.youi-tree li.treeNode>span>a:hover{
+	background:#E4EEF7;
+}
+
+.youi-tree li.treeNode .tree-node-hint{
+	color:silver;
+}
+
+.youi-tree li.treeNode>span>.youi-icon{
+	padding-right:2px;
+	margin-left: -3px;
+    display: inline-block;
+}
+
+.youi-tree li.treeNode.selected>span>a{
+	color:red;
+}
+
+.youi-tree li.treeNode>span{
+	margin-left: 0px;
+	display: block;
+	cursor:pointer;
+}
+
+.youi-tree li.treeNode>span:before{
+	padding-right:5px;
+	font-family: FontAwesome;
+	content: "\f15b";
+	color:green;
+	display: inline-block;
+	margin-top:1px;
+}
+
+.youi-tree li.treeNode.expandable:before{
+	font-family: FontAwesome;
+	content: "\f067";
+	width:16px;
+	padding-right: 5px;
+	position:absolute;
+	margin-left: -15px;
+}
+
+.youi-tree li.treeNode.expandable.expanded:before{
+	content: "\f068";
+}
+
+.youi-tree li.treeNode.expandable>span{
+	
+}
+
+.youi-tree li.treeNode.expandable>span:before{
+	content:"\f07b";
+	padding-right: 2px;
+}
+
+.youi-tree li.treeNode.expandable.expanded>span:before{
+	content:"\f07c";
+	padding-right: 0px;
+}
+
+.youi-tree li.treeNode.use-icon>span:before{
+	content:""!important;
+	padding:0px;
+}
+
+.youi-tree li.treeNode.check>span:before{
+	content:"\f096"!important;
+	padding-right: 4px;
+}
+
+.youi-tree li.treeNode.check.checked>span:before{
+	content:"\f046"!important;
+	padding-right: 2px;
+}
+
+.youi-tree li.treeNode  .tree-trigger{
+	height:15px;
+	width: 15px; 
+	cursor: pointer;
+	filter:alpha(opacity=0);
+	opacity:0;
+	padding:0;
+	z-Index:10;
+	-padding-left:15px;/*ie 6*/
+	margin:0 0 0 -15px;
+	font-size:0;
+	float:left;
+}
+
+
+.droping{
+	background:#eeffef;
+}

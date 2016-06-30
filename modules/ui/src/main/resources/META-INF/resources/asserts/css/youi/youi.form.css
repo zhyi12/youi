@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+.youi-form{
+	padding:10px;
+}
+
+.youi-form.youi-dialog{
+	display:none;
+}
+
+
+.modal-footer .form-buttons{
+	text-align:right;
+}

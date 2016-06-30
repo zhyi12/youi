@@ -1,0 +1,21 @@
+@CHARSET "UTF-8";
+
+.youi-icon{
+	cursor:pointer;
+}
+
+.youi-button .youi-icon{
+	top:2px;
+}
+
+.youi-icon:hover{
+	color:blue;
+}
+
+.icon-spin {
+  display: inline-block;
+  -moz-animation: spin 2s infinite linear;
+  -o-animation: spin 2s infinite linear;
+  -webkit-animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
+}

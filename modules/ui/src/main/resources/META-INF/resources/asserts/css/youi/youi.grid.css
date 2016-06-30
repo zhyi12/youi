@@ -1,0 +1,153 @@
+@CHARSET "UTF-8";
+
+.youi-grid{
+	
+}
+
+.youi-grid .table{
+	margin-bottom:0px;
+	
+	border: 1px solid silver;
+}
+
+
+.panel-content>.youi-grid .table{
+	border:none;
+}
+
+.youi-grid .youi-grid-singleQuery{
+	padding:5px 0px;
+	display:table;
+}
+
+.youi-grid .query-value{
+	border-radius: 0px;
+}
+
+.youi-grid .btn-group{
+	padding-bottom: 5px;
+}
+
+.youi-grid .youi-grid-singleQuery .query-button{
+	cursor:pointer;
+}
+
+
+.youi-grid .table .grow{
+	min-height:30px;
+}
+
+.youi-grid .table .grow .editor{
+	border:none;
+	width:100%;
+}
+
+.youi-grid .table .cell.button .youi-icon:hover{
+	cursor:pointer;
+	color:blue;
+}
+
+.youi-grid .table .cell.button .youi-icon:before{
+	padding-right: 2px;
+	vertical-align: bottom;
+	font-size: 14px;
+}
+
+.youi-grid .grid-hcell .option-item.selected{
+	padding-left:2px;
+}
+
+.youi-grid .grid-hcell .option-item.selected:before{
+	font-family: 'FontAwesome';
+	content: "\f00c";
+}
+
+.youi-grid  .grid-footer{
+	margin-top:-1px;
+	border: 1px solid silver;
+	padding:5px;
+}
+
+.youi-grid  .pagination{
+	margin:2px 0px;
+	float:left;
+}
+
+.youi-grid .pagination > li > a{
+	padding:5px 12px;
+	cursor:pointer;
+}
+
+.youi-grid .pagination > li > a.pIcon{
+	padding:8px 12px;
+}
+
+
+.youi-grid  .pPageStat{
+	line-height:36px;
+}
+
+.youi-grid .table  thead th{
+	background:#F5F6FA;
+	border-bottom:0;
+	color:#999;
+}
+
+.youi-grid .dropdown-property{
+	position:relative;
+}
+
+.youi-grid .no-records{
+	height:80px;
+	vertical-align: middle;
+}
+
+ .youi-grid .cell.button .youi-icon:active,
+ .youi-grid .cell.button .youi-icon:hover,
+ .youi-grid .cell.button .youi-icon{
+ 	padding-right:3px;
+ 	color:black;
+ 	text-decoration: none;
+ }
+ 
+.youi-grid .grow.selected{
+ 	background: #efefef;
+}
+
+.youi-grid .editor-tools{
+	clear:both;
+	background:#F5F6FA;
+	border: 1px solid silver;
+	border-bottom: none;
+	padding:5px;
+}
+
+.youi-grid .editor-tools .youi-icon{
+	font-size:20px;
+	padding:2px;
+	cursor:pointer;
+}
+
+.youi-grid .editor-tools .youi-icon:hover{
+	color:blue;
+}
+
+
+.youi-tree li.treeNode{
+	white-space: nowrap;
+}
+
+.ui-autocomplete {
+	z-index:9999;
+}
+
+.panel-content>.youi-grid .table,
+.panel-content>.youi-grid .grid-footer{
+	border:none;
+	border-bottom:1px solid silver;
+}
+
+.youi-grid .youi-fieldLayout .form-group{
+	margin-bottom:2px;
+}
+
