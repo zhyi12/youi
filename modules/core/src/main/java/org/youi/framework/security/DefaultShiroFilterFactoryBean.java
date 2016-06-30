@@ -21,8 +21,8 @@ import java.util.Map;
 
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.FilterChainManager;
-
 import org.youi.framework.util.CollectionUtils;
+
 
 /**
  * <p>@系统描述:YOUI</p>

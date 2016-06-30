@@ -9,17 +9,18 @@ import java.util.List;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.youi.framework.core.dataobj.tree.TreeNode;
+import org.youi.framework.core.web.menu.IMenu;
+import org.youi.framework.core.web.menu.XmlMenuLoader;
 import org.youi.framework.security.AbstractFormUserAdapter;
 import org.youi.framework.security.IAgency;
 import org.youi.framework.security.IRealmUserInfo;
 import org.youi.framework.security.IRealmUserToken;
 import org.youi.framework.security.IUser;
-
-import org.youi.framework.core.dataobj.tree.TreeNode;
-import org.youi.framework.core.web.menu.IMenu;
-import org.youi.framework.core.web.menu.XmlMenuLoader;
 import org.youi.framework.util.PasswordUtils;
 import org.youi.framework.util.StringUtils;
+
+
 
 /**
  * @author zhyi_12

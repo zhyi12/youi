@@ -3,7 +3,7 @@ package org.youi.framework.core.json;
 
 import java.io.IOException;
 
-import org.hibernate.collection.PersistentCollection;
+import org.hibernate.collection.spi.PersistentCollection;
 
 import com.fasterxml.jackson.core.*;
 

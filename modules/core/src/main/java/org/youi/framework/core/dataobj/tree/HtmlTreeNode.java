@@ -25,6 +25,7 @@ import org.youi.framework.util.PropertyUtils;
 import org.youi.framework.util.StringUtils;
 
 
+
 /**
  * @功能描述 html树节点
  * @作者  zhyi_12
@@ -38,7 +39,7 @@ public class HtmlTreeNode extends AbstractTreeNode implements TreeNode {
 	 */
 	private static final long serialVersionUID = 1879870009832140690L;
 
-	private String src;//树路径
+	private String src;//树路径 
 	
 	
 	private String href;//链接路径
@@ -50,6 +51,8 @@ public class HtmlTreeNode extends AbstractTreeNode implements TreeNode {
 	private Domain domain;//树节点映射的实体对象
 	
 	private boolean expanded;//自动展开
+	
+	private String icon;//图标
 	
 	/**
 	 * 构造函数
@@ -206,10 +209,14 @@ public class HtmlTreeNode extends AbstractTreeNode implements TreeNode {
 		String htmlText = text==null?id:text;//html文本
 		String htmlTooltips = tooltips==null?htmlText:tooltips;//html的tooltips
 		StringBuffer treeNodeClasses = new StringBuffer("treeNode");//html树的节点样式
-		String treeTriggerHtml = "";
+		String treeTriggerHtml = "",nodeHref = href;
 		
 		if(group!=null){//节点分组标识
 			treeNodeClasses.append(" "+group);//树节点分组
+		}
+		
+		if(icon!=null){//
+			treeNodeClasses.append(" use-icon");
 		}
 		
 		if(isCheck){
@@ -236,7 +243,7 @@ public class HtmlTreeNode extends AbstractTreeNode implements TreeNode {
 			if(isLast){
 				treeNodeClasses.append(" lastExpandable");//ie6样式
 			}
-			if(!"root".equals(group))treeTriggerHtml = "<div class=\"tree-trigger\"></div>";
+			treeTriggerHtml = "<div class=\"tree-trigger\"></div>";
 			if(expanded){
 				treeNodeClasses.append(" expanded");
 			}
@@ -256,14 +263,27 @@ public class HtmlTreeNode extends AbstractTreeNode implements TreeNode {
 		if(StringUtils.isNotEmpty(code)){
 			htmls.append(" id=\""+code+"\"");
 		}
-		htmls.append(	" title=\""+htmlTooltips+"\" class=\"tree-span "+treeNodeClasses.toString()+"\"><a");
+		htmls.append(	" title=\""+htmlTooltips+"\" class=\"tree-span "+treeNodeClasses.toString()+"\">");
+		
+		if(icon!=null){//节点分组标识
+			htmls.append("<span class=\"youi-icon icon-"+icon+"\"></span>");
+		}
+		
+		htmls.append("<a");
+		
 		if(getDomain()!=null&&StringUtils.isNotEmpty(href)){
 			Object target = PropertyUtils.getSimplePropertyValue(getDomain(), "target");
-			if(target!=null){
+			if("_blank".equals(target)||"subpage".equals(target)){
 				htmls.append(" target=\""+target+"\"");
 			}
+//			nodeHref = href+"?pageId="+this.getId();  
 		}
-		htmls.append(" class=\"tree-a\" href=\""+href+"\">");
+		
+		if(StringUtils.isNotEmpty(nodeHref)){
+			htmls.append(" href=\""+nodeHref+"\"");
+		}
+		
+		htmls.append(" class=\"tree-a page-link\" >");
 		htmls.append(		htmlText);//html树节点的显示文本
 		htmls.append(	"</a></span>");
 		//子节点
@@ -320,4 +340,14 @@ public class HtmlTreeNode extends AbstractTreeNode implements TreeNode {
 	public void setExpanded(boolean expanded) {
 		this.expanded = expanded;
 	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+	
+	
 }

@@ -28,8 +28,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
 
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
@@ -38,8 +42,6 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.validator.ClassValidator;
-import org.hibernate.validator.InvalidValue;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.PropertyValues;
@@ -203,7 +205,7 @@ public class RequestDataIn<T extends Domain> implements DataIn<T>{
 	/* (non-Javadoc)
 	 * @see org.youi.common.web.controller.DataIn#getDomain(org.youi.common.domain.Domain, org.springframework.validation.BindingResult)
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes"})
 	public T getDomain(T bean, BindingResult result) {
 		
 		if(ServletFileUpload.isMultipartContent(webRequest)){
@@ -214,13 +216,20 @@ public class RequestDataIn<T extends Domain> implements DataIn<T>{
 			
 			BeanUtils.copyProperties(dataBinder.getTarget(), bean);
 		}
+		
 		//hibernate domain 对象校验
-		ClassValidator<T> 
-			domainValidator = new ClassValidator(bean.getClass());
-		InvalidValue[] invalidValues = domainValidator.getInvalidValues(bean);
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		
+		Set<ConstraintViolation<T>> constraintViolations = 
+				factory.getValidator().validate(bean, bean.getClass());
+		
 		//抛出对象校验异常
-		if(invalidValues.length>0){
-			throw new DomainValidatorException(invalidValues);
+		if(constraintViolations!=null && constraintViolations.size()>0){
+			List<String> violations = new ArrayList<String>();
+			for(ConstraintViolation constraintViolation:constraintViolations){
+				violations.add(constraintViolation.getMessage());
+			}
+			throw new DomainValidatorException(violations);
 		}
 		//设置数据权限相关的条件
 		if(dataInDesc!=null){

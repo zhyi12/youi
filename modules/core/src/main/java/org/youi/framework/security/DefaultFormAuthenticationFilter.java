@@ -32,8 +32,12 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.youi.framework.core.Constants;
+import org.youi.framework.core.web.view.Message;
+import org.youi.framework.util.PojoMapper;
+
 
 /**
  * <p>@系统描述:YOUI</p>
@@ -48,12 +52,17 @@ public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter{
 	public static final String DEFAULT_DYNAMICCODE_PARAM = "dynamicCode";
     public static final String DEFAULT_VERIFICATIONCODE_PARAM = "verificationCode";
     private static final String DEFAULT_AGENCYID_PARAM = "agencyId";
+    
+    private static final String DEFAULT_LOGIN_TYPE = "loginType";
 	
     private boolean dynamicCheck = false;//动态校验
     
     private boolean vcodeCheck = false;//校验码校验
     
     private String authParam = DEFAULT_AGENCYID_PARAM;
+    
+    @Autowired
+    private EsbSecurityManager esbSecurityManager;
     
 	@Override
 	protected AuthenticationToken createToken(ServletRequest request,
@@ -70,6 +79,8 @@ public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter{
 		token.setAuthParam(getAuthParam(request));
 		HttpServletRequest httpRequest = (HttpServletRequest)request;
 		token.setContextPath(httpRequest.getContextPath());
+		token.setLoginType(getLoginType(request));
+		token.setRedirect(getRedirect(request));
 		
 		//
 		if(vcodeCheck){
@@ -96,8 +107,21 @@ public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter{
 			Map<String,Object> params = new HashMap<String,Object>();
 			params.put("principal",token.getPrincipal());
 			params.put("username", getUsername(request));
-			WebUtils.issueRedirect(request, response, "/common/loginSuccess.json",params);
-			return true;
+			params.put("authorization", esbSecurityManager.encryptSecurityInfo(null));
+			
+			Map<String,Object> results = new HashMap<String,Object>();
+			
+			response.setContentType("application/json;charset=UTF-8");
+			
+			results.put("record", params);
+			results.put("message",new Message(Constants.SUCCESS_CODE, "登录成功"));
+			
+			try {
+				response.getOutputStream().write(PojoMapper.toJson(results, false).getBytes("UTF-8"));
+				return false;
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
+			}
 		}
 		return super.onLoginSuccess(token, subject, request, response);
 	}
@@ -111,12 +135,14 @@ public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter{
 		//如果是json类型登录请求，则返回json输出信息
 		if(Boolean.valueOf(isJson)==true){
 			this.setFailureAttribute(request, e);
-			Map<String,Object> params = new HashMap<String,Object>();
-			params.put("error",request.getAttribute("error"));
-			params.put("username", getUsername(request));
+			Map<String,Object> results = new HashMap<String,Object>();
+			
+			Object error = request.getAttribute("error");
+			results.put("message",new Message(Constants.ERROR_DEFAULT_CODE, error==null?"登录失败":error.toString()));
+			
 			try {
-				WebUtils.issueRedirect(request, response, "/common/loginFailed.json",params);
-				return true;
+				response.getOutputStream().write(PojoMapper.toJson(results, false).getBytes("UTF-8"));
+				return false;
 			} catch (IOException ioe) {
 				
 			}
@@ -127,6 +153,14 @@ public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter{
 
 	private String getVerificationCode(ServletRequest request) {
 		return WebUtils.getCleanParam(request, DEFAULT_VERIFICATIONCODE_PARAM);
+	}
+	
+	private String getLoginType(ServletRequest request) {
+		return WebUtils.getCleanParam(request, DEFAULT_LOGIN_TYPE);
+	}
+	
+	private String getRedirect(ServletRequest request) {
+		return WebUtils.getCleanParam(request, "redirect");
 	}
 
 	private String getDynamicCode(ServletRequest request) {
@@ -194,12 +228,23 @@ public class DefaultFormAuthenticationFilter extends FormAuthenticationFilter{
 	@Override
 	protected void redirectToLogin(ServletRequest request,
 			ServletResponse response) throws IOException {
+		//page
+		//其他类型
 		if(((HttpServletRequest) request).getRequestURI().endsWith(Constants.DATA_URL_POSTFIX)){//数据访问异常
 			//如果是json格式的访问，返回json格式的登录提示
 			WebUtils.issueRedirect(request, response, "/common/accessDenied.json");
 		}else{
-			super.redirectToLogin(request, response);
+			String pageId = request.getParameter("page:pageId");
+			if(StringUtils.isEmpty(pageId)){
+				super.redirectToLogin(request, response);
+			}else{
+				WebUtils.issueRedirect(request, response, "/common/accessDenied.json");
+			}
 		}
+	}
+
+	public void setEsbSecurityManager(EsbSecurityManager esbSecurityManager) {
+		this.esbSecurityManager = esbSecurityManager;
 	}
 
 }

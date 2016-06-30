@@ -12,4 +12,6 @@ public @interface ServiceParam {
 	String name();
 	
 	String pubProperty() default "";
+	
+	boolean isTokenParam() default false;
 }

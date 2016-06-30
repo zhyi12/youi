@@ -65,8 +65,7 @@ public class PageController extends BaseController{
     		HttpServletResponse response){
 		ModelAndView model = new ModelAndView();
 		
-		//TODO security
-		
+		//TODO security ApplicationDispatcher
 		//公共参数填充
 		String path = pagePath.replace(".", "/"); 
 		model.setViewName(path+"/"+pageId);

@@ -24,12 +24,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StringUtils;
-
 import org.youi.framework.core.dataobj.tree.HtmlTreeNode;
 import org.youi.framework.core.dataobj.tree.TreeNode;
 import org.youi.framework.core.web.menu.IMenu;
 import org.youi.framework.core.web.menu.MenuProvider;
 import org.youi.framework.util.SecurityUtils;
+
 
 /**
  * <p>@系统描述:YOUI</p>
@@ -68,7 +68,15 @@ public class SecurityMenuProvider implements MenuProvider {
 				} 
 			}
 		}
-		return htmls.toString();
+		
+		String contextPath = pageContext.getServletContext().getContextPath();
+		
+		String menuHtml = htmls.toString();
+		if(contextPath!=null){
+			menuHtml = menuHtml.replaceAll("\\{contextPath\\}", contextPath);
+		}
+		
+		return menuHtml;
 	}
 	/**
 	 * 生成menuBar和menu的html
@@ -78,12 +86,17 @@ public class SecurityMenuProvider implements MenuProvider {
 	private String buildMenuBarAndMenu(TreeNode child) {
 		StringBuffer htmls = new StringBuffer();
 		
+		AccountPrincipal account = SecurityUtils.getAccount();
+		
 		if(child!=null){//如果节点不为空
 			//先创建菜单头
 			//<h1 class="type"><a href="javascript:void(0)">网站常规管理</a></h1>
+			
+			String href = child.getHref()!=null?child.getHref():"javascript:void(0)";
+			
 			htmls.append("<h1 id=\""+child.getId()+"\" class=\"")
 				 .append(buildStyle(child,"menu-bar-title"))
-				 .append("\"><a href=\"javascript:void(0)\"><div class=\"icon-text\"><span class=\"youi-icon menubar left\"></span><span class=\"span-text\">")
+				 .append("\"><a href=\""+href+"\" ><div class=\"icon-text\"><span class=\"youi-icon menubar left\"></span><span class=\"span-text\">")
 				 .append(child.getText())
 				 .append("</span></div></a></h1>");
 			List<TreeNode> menuItems = child.getChildren();
@@ -97,7 +110,13 @@ public class SecurityMenuProvider implements MenuProvider {
 				htmls.append("</ul></div>");
 			}
 		}
-		return htmls.toString();
+		
+		String menuHtmls = htmls.toString();
+		if(account!=null){
+			menuHtmls = menuHtmls.replaceAll("\\{loginName\\}", account.getLoginName());
+		}
+		
+		return menuHtmls;
 	}
 //	
 	private String buildStyle(TreeNode treeNode,String fiexdStyle){
@@ -106,6 +125,8 @@ public class SecurityMenuProvider implements MenuProvider {
 			IMenu menu = (IMenu) treeNode.getDomain();
 			if(!StringUtils.isEmpty((menu.getMenuStyle()))){
 				styleBuf.append(" "+menu.getMenuStyle());
+				
+				((HtmlTreeNode)treeNode).setIcon(menu.getMenuStyle());
 			}
 		}
 		return styleBuf.toString();

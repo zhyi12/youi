@@ -25,7 +25,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.hibernate3.Hibernate3Module;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 
 public class PojoMapper {
 
@@ -36,7 +36,7 @@ public class PojoMapper {
 	
 	static {
 		domainMapper.registerModule(new DomainJsonModule());
-		objectMapper.registerModule(new Hibernate3Module());
+		objectMapper.registerModule(new Hibernate5Module());
 	}
 
 //	public static <T> Object fromJson(String jsonAsString, Class<T> pojoClass)
@@ -61,8 +61,7 @@ public class PojoMapper {
 		StringWriter sw = new StringWriter();
 
 		try {
-			JsonGenerator jg = jf.createJsonGenerator(sw);
-			
+			JsonGenerator jg = jf.createGenerator(sw);
 			if (prettyPrint) {
 				jg.useDefaultPrettyPrinter();
 			}

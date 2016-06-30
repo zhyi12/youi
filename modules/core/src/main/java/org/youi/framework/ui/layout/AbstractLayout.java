@@ -42,8 +42,9 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.PageContext;
 
+import org.apache.taglibs.standard.resources.Resources;
 import org.dom4j.Document;
-import org.youi.framework.ui.resource.Resources;
+
 
 /**
  * @功能描述
@@ -62,7 +63,20 @@ public abstract class AbstractLayout {
 	
 	protected Document document;//
 	
+	public AbstractLayout(){
+		
+	}
+	
 	public AbstractLayout(String decorator,Document document){
+		this.decorator = decorator;
+		this.document = document;
+	}
+	/**
+	 * 初始化布局
+	 * @param decorator 
+	 * @param document 
+	 */
+	protected void initLayout(Document document, String decorator){
 		this.decorator = decorator;
 		this.document = document;
 	}
@@ -257,11 +271,7 @@ public abstract class AbstractLayout {
 		private ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
 		/** A ServletOutputStream we convey, tied to this Writer. */
-		private ServletOutputStream sos = new ServletOutputStream() {
-			public void write(int b) throws IOException {
-				bos.write(b);
-			}
-		};
+		private ServletOutputStream sos = new LayoutServletOutputStream(bos);
 
 		/** 'True' if getWriter() was called; false otherwise. */
 		private boolean isWriterUsed;
@@ -384,5 +394,29 @@ public abstract class AbstractLayout {
 			u.delete(sessionStart, sessionEnd);
 		}
 		return u.toString();
+	}
+	
+	private static class LayoutServletOutputStream extends ServletOutputStream {
+
+		private ByteArrayOutputStream bos;
+		public LayoutServletOutputStream(ByteArrayOutputStream bos) {
+			this.bos = bos;
+		}
+
+		//@Override
+		public boolean isReady() {
+			return true;
+		}
+
+		//@Override
+//		public void setWriteListener(WriteListener writeListener) {
+//			
+//		}
+
+		@Override
+		public void write(int b) throws IOException {
+			bos.write(b);
+		}
+		
 	}
 }

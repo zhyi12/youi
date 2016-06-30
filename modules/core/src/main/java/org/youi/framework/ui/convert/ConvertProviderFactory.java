@@ -20,9 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.shiro.cache.Cache;
+import org.apache.shiro.cache.CacheManager;
 import org.springframework.core.io.ResourceLoader;
 import org.youi.framework.core.convert.IConvert;
 import org.youi.framework.core.convert.IConvertProviderFactory;
+
 
 
 /**
@@ -37,8 +40,13 @@ public class ConvertProviderFactory implements IConvertProviderFactory{
 	List<ConvertProvider> providers;
 	
 	private ResourceLoader resourceLoader;
-
 	
+	private CacheManager cacheManager;
+	
+	public void setCacheManager(CacheManager cacheManager) {
+		this.cacheManager = cacheManager;
+	}
+
 	/**
 	 * @param providers the providers to set
 	 */
@@ -52,6 +60,28 @@ public class ConvertProviderFactory implements IConvertProviderFactory{
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public IConvert getConvert(String name,Locale locale){
+		//从缓存中获取
+		IConvert<String> convert = null;
+		if(cacheManager!=null){
+			Cache<String, IConvert<String>> cachedConvert
+				= cacheManager.getCache("com.gsoft.framework.taglib.convert_cache");
+			convert = cachedConvert.get(name);
+			if(convert==null){
+				convert = this.loadConvert(name, locale);
+				if(convert!=null){
+					cachedConvert.put(name, convert);
+				}
+			}
+		}else{
+			convert = this.loadConvert(name, locale);
+		}
+		
+		return convert;
+		
+	}
+
+	@SuppressWarnings("rawtypes")
+	private IConvert loadConvert(String name,Locale locale){
 		IConvert convert = null;
 		if(providers==null){
 			providers = new ArrayList<ConvertProvider>();
@@ -67,7 +97,6 @@ public class ConvertProviderFactory implements IConvertProviderFactory{
 				return convert;//
 			}
 		}
-		return null;
+		return convert;
 	}
-
 }

@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 import org.youi.framework.core.dataobj.Domain;
 
+
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ConditionCollection {
