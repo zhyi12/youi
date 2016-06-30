@@ -20,6 +20,7 @@ import java.util.HashMap;
 
 import org.youi.framework.core.dataobj.Domain;
 
+
 /**
  * <p>@系统描述:YOUI</p>
  * <p>@功能描述:用户配置</p>

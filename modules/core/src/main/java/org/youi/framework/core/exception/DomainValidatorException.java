@@ -16,11 +16,11 @@
  */
 package org.youi.framework.core.exception;
 
+import java.util.List;
 import java.util.Locale;
 
-import org.hibernate.validator.InvalidValue;
 import org.springframework.context.MessageSource;
-import org.youi.framework.core.web.view.InvalidMessage;
+import org.youi.framework.core.Constants;
 import org.youi.framework.core.web.view.Message;
 
 /**
@@ -30,30 +30,27 @@ import org.youi.framework.core.web.view.Message;
  * @创建时间 Jan 6, 2011
  */
 public class DomainValidatorException extends YouiException implements ExceptionMessage{
+	
+//	private List<String> constraintViolations;
+
+	public DomainValidatorException(List<String> constraintViolations) {
+		super(constraintViolations.toString());
+//		this.constraintViolations = constraintViolations;
+	}
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1979382516757606789L;
-	
-	private InvalidValue[] invalidValues;
 
-	public DomainValidatorException(InvalidValue[] invalidValues) {
-		super(new InvalidMessage(invalidValues).info);
-		this.invalidValues = invalidValues;
-	}
-	
 	@Override
-	public String getMessage(){
-		return getExceptionMessage().getInfo();
-	}
-	
 	public Message getExceptionMessage() {
-		return new InvalidMessage(invalidValues);
+		return new Message(Constants.ERROR_DOMAIN_VALIDATOR,this.getMessage());
 	}
 
 	@Override
-	public Message getExceptionMessage(MessageSource messageSource,
-			Locale locale) {
-		return new InvalidMessage(invalidValues);
+	public Message getExceptionMessage(MessageSource messageSource, Locale locale) {
+		return new Message(Constants.ERROR_DOMAIN_VALIDATOR,this.getMessage());
 	}
+	
 }

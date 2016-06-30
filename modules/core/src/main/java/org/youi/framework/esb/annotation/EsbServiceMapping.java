@@ -17,7 +17,7 @@ import org.youi.framework.core.web.annotation.Filter;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EsbServiceMapping {
-	InitializeProperty[] initializeProperties() default {};
+	InitializeProperty[] initializeProperties() default {};//延迟加载属性配置
 	
 	PubCondition[] pubConditions() default {};
 	

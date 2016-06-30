@@ -18,7 +18,7 @@ package org.youi.framework.core.json;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.datatype.hibernate3.HibernateAnnotationIntrospector;
+import com.fasterxml.jackson.datatype.hibernate5.HibernateAnnotationIntrospector;
 //import com.fasterxml.jackson.datatype.hibernate3.HibernateSerializers;
 
 public class DomainJsonModule extends Module {

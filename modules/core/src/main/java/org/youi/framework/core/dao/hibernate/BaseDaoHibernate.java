@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -47,8 +46,8 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.ObjectRetrievalFailureException;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.youi.framework.core.dao.Dao;
 import org.youi.framework.core.dataobj.Domain;
 import org.youi.framework.core.exception.YouiException;
@@ -135,11 +134,6 @@ public abstract class BaseDaoHibernate<T, PK extends Serializable> extends Hiber
     	//
         return (T) super.getHibernateTemplate().merge(object);
     }
-    
-    @Override
-    public void save(List<T> list){
-    	getHibernateTemplate().saveOrUpdateAll(list);
-    }
 
     /**
      * {@inheritDoc}
@@ -156,9 +150,10 @@ public abstract class BaseDaoHibernate<T, PK extends Serializable> extends Hiber
     		
     		@Override
 			public Object doInHibernate(Session session)
-					throws HibernateException, SQLException {
+					throws HibernateException {
 				Query query = session.createQuery("delete from "+getModelClazz().getName()
 				+ " as model where model." + property + "= ?");
+				
 				query.setParameter(0, value);
 				return query.executeUpdate();
 			}
@@ -207,7 +202,7 @@ public abstract class BaseDaoHibernate<T, PK extends Serializable> extends Hiber
            params[index] = key;
            values[index++] = queryParams.get(key);
        }
-       return getHibernateTemplate().findByNamedQueryAndNamedParam(
+       return (List<T>) getHibernateTemplate().findByNamedQueryAndNamedParam(
            queryName, 
            params, 
            values);
@@ -219,10 +214,10 @@ public abstract class BaseDaoHibernate<T, PK extends Serializable> extends Hiber
 		return (List<T>)getHibernateTemplate().execute(new HibernateCallback<List<T>>() {
 			@Override
 			public List<T> doInHibernate(Session session)
-					throws HibernateException, SQLException {
+					throws HibernateException {
 				String queryString = "from " + getModelClazz().getName()
 				+ " as model where model." + propertyA + " like ? or model."+propertyB+" like ? order by model."+propertyA;
-				Query queryObject = getSession().createQuery(queryString);
+				Query queryObject = session.createQuery(queryString); 
 				
 				queryObject.setParameter(0, term+"%");
 				queryObject.setParameter(1, "%"+term+"%");
@@ -258,10 +253,10 @@ public abstract class BaseDaoHibernate<T, PK extends Serializable> extends Hiber
 			
 			@Override
 			public Object doInHibernate(Session session)
-					throws HibernateException, SQLException {
+					throws HibernateException {
 				String queryString = "from " + getModelClazz().getName()
 				+ " as model where model." + propertyName + "= ?";
-				Query queryObject = getSession().createQuery(queryString);
+				Query queryObject = session.createQuery(queryString);
 				queryObject.setParameter(0, value);
 				List<?> list = queryObject.list();
 				logger.info("getObjectByUniqueProperty:"+queryString);
@@ -290,7 +285,7 @@ public abstract class BaseDaoHibernate<T, PK extends Serializable> extends Hiber
 		return (T)this.getHibernateTemplate().execute(new HibernateCallback() {
 			@Override
 			public Object doInHibernate(Session session)
-					throws HibernateException, SQLException {
+					throws HibernateException {
 				Object initializeObject = null;
 				initializeObject = session.get(getModelClazz(),id);
 				initializeObjectCollections(initializeObject,cAttributes);
@@ -341,12 +336,12 @@ public abstract class BaseDaoHibernate<T, PK extends Serializable> extends Hiber
 		} 
 	}
 	
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> getList(String property,String value){
 		String queryString = "from " + getModelClazz().getName()
 		+ " as model where model." + property + "= ?";
-		return this.getHibernateTemplate().find(queryString, value);
+		return (List<T>) this.getHibernateTemplate().find(queryString, value);
 	}
 	
 	@SuppressWarnings({"unchecked"})
@@ -362,7 +357,7 @@ public abstract class BaseDaoHibernate<T, PK extends Serializable> extends Hiber
 			sqlBuf.append(" and model."+property).append("=? ");
 		}
 		
-		return this.getHibernateTemplate().find(sqlBuf.toString(), values);
+		return (List<T>) this.getHibernateTemplate().find(sqlBuf.toString(), values);
 	}
 	/**
 	 * 设置所有数据的属性数据值为 newValue
@@ -398,7 +393,7 @@ public abstract class BaseDaoHibernate<T, PK extends Serializable> extends Hiber
 		getHibernateTemplate().execute(new HibernateCallback<Object>(){
 			@Override
 			public Object doInHibernate(Session session)
-					throws HibernateException, SQLException {
+					throws HibernateException {
 				StringBuilder queryBuf = new StringBuilder();
 				queryBuf.append("update ").append(getModelClazz().getName()).append(" as model ")
 						.append(" set model.").append(propertyName).append("=:newValue");
@@ -407,7 +402,7 @@ public abstract class BaseDaoHibernate<T, PK extends Serializable> extends Hiber
 						.append(" ").append(oldValueOperator).append(" :oldValue");
 				}
 				
-				Query query = getSession().createQuery(queryBuf.toString())
+				Query query = session.createQuery(queryBuf.toString())
 					.setParameter("newValue", newValue);
 				if(oldValue!=null){
 					query.setParameter("oldValue", oldValue);
@@ -436,7 +431,7 @@ public abstract class BaseDaoHibernate<T, PK extends Serializable> extends Hiber
 		HibernateCallback hibernateCallback = new HibernateCallback() {
 			@Override
 			public Object doInHibernate(Session session)
-					throws HibernateException, SQLException {
+					throws HibernateException {
 				Criteria criteria = detachedCriteria
 						.getExecutableCriteria(session);// 从session中获得criteria对象
 				Object[] result = generateQueryExpression(conditions, criteria);// 生成查询条件
@@ -447,7 +442,7 @@ public abstract class BaseDaoHibernate<T, PK extends Serializable> extends Hiber
 			}
 		};
 		
-		List list = (List) getHibernateTemplate().execute(hibernateCallback);
+		List list = (List) getHibernateTemplate().executeWithNativeSession(hibernateCallback);
 		return this.getResultList(list);
 	}
 	/**
@@ -468,7 +463,7 @@ public abstract class BaseDaoHibernate<T, PK extends Serializable> extends Hiber
 		HibernateCallback hibernateCallback = new HibernateCallback() {
 			@Override
 			public Object doInHibernate(Session session)
-					throws HibernateException, SQLException {
+					throws HibernateException {
 				Criteria criteria = detachedCriteria.getExecutableCriteria(session);// 从session中获得criteria对象
 				int pageType = pager.getPageType(),
 					totalCount = 0;
@@ -480,7 +475,7 @@ public abstract class BaseDaoHibernate<T, PK extends Serializable> extends Hiber
 				//查询记录总数
 				if(pageType==Pager.QUERY_TYPE_ALL||pageType==Pager.QUERY_TYPE_COUNT){
 					try {
-						totalCount = ((Integer) criteria.setProjection(
+						totalCount = ((Long) criteria.setProjection(
 								Projections.rowCount()).uniqueResult()).intValue();// 计算总数
 					} catch (RuntimeException e) {
 						logger.error(e.getMessage());
@@ -502,7 +497,7 @@ public abstract class BaseDaoHibernate<T, PK extends Serializable> extends Hiber
 				return getCriteriaResult(list,totalCount,pager);
 			}
 		};
-		return (PagerRecords)getHibernateTemplate().execute(hibernateCallback);
+		return (PagerRecords)getHibernateTemplate().executeWithNativeSession(hibernateCallback);
 	}
 	/*
 	 * 获得分页查询的结果

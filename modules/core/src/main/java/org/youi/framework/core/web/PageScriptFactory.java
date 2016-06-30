@@ -19,7 +19,6 @@ package org.youi.framework.core.web;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * <p>@系统描述:YOUI</p>
@@ -28,7 +27,6 @@ import org.springframework.stereotype.Component;
  * <p>@版本 ：1.0.0</p>
  * <p>@创建时间： 下午09:17:12</p>
  */
-@Component
 public class PageScriptFactory {
 	
 	@Autowired

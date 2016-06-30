@@ -33,6 +33,10 @@ public class DefaultLoginFormToken extends UsernamePasswordToken implements IRea
 	private String contextPath;//上下文路径
 	
 	private String authParam;//其他登录参数
+	
+	private String loginType;//登录类型
+	
+	private String redirect;//登录跳转的URL
 
 	public String getContextPath() {
 		return contextPath;
@@ -91,6 +95,22 @@ public class DefaultLoginFormToken extends UsernamePasswordToken implements IRea
 	 */
 	public void setAuthParam(String authParam) {
 		this.authParam = authParam;
+	}
+
+	public String getLoginType() {
+		return loginType;
+	}
+
+	public void setLoginType(String loginType) {
+		this.loginType = loginType;
+	}
+
+	public String getRedirect() {
+		return redirect;
+	}
+
+	public void setRedirect(String redirect) {
+		this.redirect = redirect;
 	}
 
 }

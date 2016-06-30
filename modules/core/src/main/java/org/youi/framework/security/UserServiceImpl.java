@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheManager;
 import org.springframework.beans.BeansException;
@@ -13,12 +15,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.OrderComparator;
 import org.springframework.util.StringUtils;
-//import org.youi.framework.core.context.TimerBean;
 import org.youi.framework.core.dataobj.tree.HtmlTreeNode;
+import org.youi.framework.core.dataobj.tree.TreeNode;
 import org.youi.framework.core.dataobj.tree.TreeUtils;
 import org.youi.framework.core.web.menu.IMenu;
 
+
 public class UserServiceImpl implements UserService,ApplicationContextAware{
+	
+	private static final Log logger = LogFactory.getLog(UserServiceImpl.class);//日记
 
 	@SuppressWarnings("rawtypes")
 	private List<IUserAdapter> userAdapters;
@@ -34,7 +39,7 @@ public class UserServiceImpl implements UserService,ApplicationContextAware{
 	/**
 	 * 菜单缓存, 30分钟过期
 	 */
-	private final static String MENU_CACHE = "org.youi.framework.security.UserService_menuCache";
+	private final static String MENU_CACHE = "com.gsoft.framework.security.UserService_menuCache";
 	
 	public void setCacheManager(CacheManager cacheManager) {
 		this.cacheManager = cacheManager;
@@ -126,7 +131,14 @@ public class UserServiceImpl implements UserService,ApplicationContextAware{
 			IUser user) {
 		//当前帐号提供类的全部菜单
 		//获取全部的菜单
-		List<IMenu> allMenus = userAdapter.getProviderMenus();
+		List<IMenu> allMenus;
+		
+		if(IUserAdapter2.class.isAssignableFrom(userAdapter.getClass())){
+			allMenus = ((IUserAdapter2)userAdapter).getProviderMenus(user);
+		}else{
+			allMenus = userAdapter.getProviderMenus();
+		}
+		
 		//获取当前用户的菜单
 		List<String> menuIds = userAdapter.getAccountMenus(user);
 		
@@ -204,5 +216,77 @@ public class UserServiceImpl implements UserService,ApplicationContextAware{
 	public IUserAdapter getUserAdapter(String beanName) {
 		if(StringUtils.isEmpty(beanName)) return null;
 		return userAdapterBeans.get(beanName);
+	}
+	
+	/**
+	 * 修改密码服务
+	 * @param account
+	 * @param password
+	 * @param confirmPassword
+	 * @param oldPassword
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public boolean modifyPassword(
+			IUser account,
+			String password,
+			String confirmPassword,
+			String oldPassword){
+		if(userAdapters!=null){
+			for(IUserAdapter adapter:userAdapters){
+				if(adapter.supports(account)){
+					if(adapter instanceof IPasswordService){
+						((IPasswordService)adapter).modifyPassword(account.getLoginName(),password,confirmPassword,oldPassword);
+					}else{
+						logger.warn(adapter.getClass()+"未实现PasswordService接口.");
+					}
+					break;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * 重置密码
+	 * @param account
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public boolean resetPassword(
+			IUser account){
+		if(userAdapters!=null){
+			for(IUserAdapter adapter:userAdapters){
+				if(adapter.supports(account)&&adapter.getClass().isAssignableFrom(IPasswordService.class)){
+					((IPasswordService)adapter).resetPassword(account.getLoginName());
+					break;
+				}
+			}
+		}
+		return true;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public TreeNode getAgencyTree(IUser user){
+		if(userAdapters!=null){
+			for(IUserAdapter adapter:userAdapters){
+				if(adapter.supports(user)){
+					return adapter.getAgencyTree();
+				}
+			}
+		}
+		return null;
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List<IAgency> getAgencyByParent(IUser user,String parentAgencyId){
+		if(userAdapters!=null){
+			for(IUserAdapter adapter:userAdapters){
+				if(adapter.supports(user)){
+					return adapter.getAgencyByParent(parentAgencyId);
+				}
+			}
+		}
+		return null;
 	}
 }

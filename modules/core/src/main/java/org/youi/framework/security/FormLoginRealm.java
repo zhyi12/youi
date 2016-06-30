@@ -82,14 +82,6 @@ public class FormLoginRealm extends AuthorizingRealm implements ApplicationConte
 		//授权，包括角色和访问授权相关的信息加入
 		if(principal instanceof IUser){
 			return userService.getRealmUserInfo((IUser)principal);
-//			IRealmUser user = (IRealmUser)principal;
-//			if(providers!=null){
-//				for(IRealmProvider provider:providers){
-//					if(provider.supports(user)){
-//						return provider.getAuthorizationInfo(user);
-//					}
-//				}
-//			}
 		}
 		return new SimpleAuthorizationInfo();
 	}

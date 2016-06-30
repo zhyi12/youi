@@ -74,11 +74,6 @@ public interface Dao<T, PK extends Serializable> {
      * @return the persisted object
      */
     T save(T object);
-    /**
-     * 保存集合
-     * @param list
-     */
-    void save(List<T> list);
 
     /**
      * Generic method to delete an object based on class and id

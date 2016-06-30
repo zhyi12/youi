@@ -65,22 +65,20 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 <!-- 		<nexus.root>http://192.168.1.143:8081/nexus</nexus.root> -->
-		<nexus.root>http://192.168.80.131:8081/nexus</nexus.root>
+		<nexus.root>http://120.25.101.206:8081/nexus</nexus.root>
 		<junit.version>4.8.2</junit.version>
 		<aspectj.version>1.6.9</aspectj.version>
 		<antlr.version>2.7.6</antlr.version>
 		<aopalliance.version>1.0</aopalliance.version>
-		<springframework.version>3.2.6.RELEASE</springframework.version>
-		<springframework.webflow.version>2.3.1.RELEASE</springframework.webflow.version>
+		<springframework.version>4.3.0.RELEASE</springframework.version>
 			
 		<!-- hibernate 相关 -->
 		<ejb3-persistence.version>1.0.2.GA</ejb3-persistence.version>
-		<hibernate-core.version>3.3.1.GA</hibernate-core.version>
-		<hibernate-annotations.version>3.4.0.GA</hibernate-annotations.version>
-		<hibernate-commons-annotations.version>3.1.0.GA</hibernate-commons-annotations.version>
-		<hibernate-validator.version>3.1.0.GA</hibernate-validator.version>
+		<hibernate-core.version>5.1.0.Final</hibernate-core.version>
+		<hibernate-commons-annotations.version>5.0.1.Final</hibernate-commons-annotations.version>
+		<hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
 
-		<commons.logging.version>1.1.1</commons.logging.version>
+		<commons.logging.version>1.2</commons.logging.version>
 		<commons.beanutils.version>1.8.3</commons.beanutils.version>
 		<commons.collections.version>3.1</commons.collections.version>
 		<commons.dbcp.version>1.4</commons.dbcp.version>
@@ -96,17 +94,16 @@
 		<standard.version>1.1.2</standard.version>
 		<dom4j.version>1.6.1</dom4j.version>
 		<quartz.version>2.0.1</quartz.version>
-		<log4j.version>1.2.14</log4j.version>
+		<log4j.version>1.2.17</log4j.version>
 		<slf4j.version>1.6.0</slf4j.version>
 
 		<chardet.version>1.0</chardet.version>
 		<aopalliance.version>1.0</aopalliance.version>
 		<cpdetector.version>1.0.8</cpdetector.version>
 		<kaptcha.version>2.3.2</kaptcha.version>
-		<jackjson.version>2.1.3</jackjson.version>
-		<jackjson.hibernate.version>2.1.2</jackjson.hibernate.version>
+		<jackjson.version>2.7.5</jackjson.version>
 		<ehcache.version>2.0.3</ehcache.version>
-		<mysql-connector-java.version>5.0.8</mysql-connector-java.version>
+		<mysql-connector-java.version>5.1.37</mysql-connector-java.version>
 		<javassist.version>3.14.0-GA</javassist.version>
 		<cglib.version>2.2</cglib.version>
 		<jaxen.version>1.1.1</jaxen.version>
@@ -408,11 +405,11 @@
 			
 			<!-- orm -->
 			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>ejb3-persistence</artifactId>
-				<version>${ejb3-persistence.version}</version>
-				<scope>compile</scope>
+			    <groupId>org.hibernate</groupId>
+			    <artifactId>hibernate-entitymanager</artifactId>
+			    <version>${hibernate-core.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
@@ -473,14 +470,20 @@
 		
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackjson.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackjson.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-hibernate3</artifactId>
-			<version>${jackjson.hibernate.version}</version>
+			<artifactId>jackson-datatype-hibernate5</artifactId>
+			<version>${jackjson.version}</version>
 		</dependency>
 		
 			<!-- gzip filter -->
@@ -547,6 +550,13 @@
 				<version>2.5</version>
 				<scope>provided</scope>
 			</dependency>
+			
+			<dependency>
+	            <groupId>javax.servlet</groupId>
+	            <artifactId>javax.servlet-api</artifactId>
+	            <version>3.1.0</version>
+	            <scope>provided</scope>
+	        </dependency>
 
 			<dependency>
 				<groupId>javax.servlet.jsp</groupId>
@@ -557,55 +567,6 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<modules>
-<!-- 		<module>modules/core</module> -->
-<!-- 		<module>modules/context</module> -->
-<!-- 		<module>modules/security</module> -->
-<!-- 		<module>modules/securityImpl</module> -->
-<!-- 		<module>modules/securitySSO</module> -->
-<!-- 		<module>modules/securityEsbweb</module> -->
-		
-<!-- 		<module>modules/ui</module> -->
-		
-<!-- 		<module>modules/codemap</module> -->
-<!-- 		<module>modules/codemapImpl</module> -->
-		
-<!-- 		<module>modules/workflow</module> -->
-<!-- 		<module>modules/workflowImpl</module> -->
-<!-- 		<module>modules/workflowEsbweb</module> -->
-		
-<!-- 		<module>modules/job</module> -->
-<!-- 		<module>modules/test</module> -->
-		
-<!-- 		<module>modules/esb</module> -->
-		
-<!-- 		<module>modules/js</module> -->
-<!-- 		<module>modules/upload</module> -->
-		
-<!-- 		<module>modules/codegen</module> -->
-<!-- 		<module>modules/resource</module> -->
-		
-<!-- 		<module>modules/amqp</module> -->
-<!-- 		<module>modules/cache</module> -->
-<!-- 		<module>modules/dbcontext</module> -->
-<!-- 		<module>modules/demo</module> -->
-<!-- 		<module>modules/rules</module> -->
-		
-<!-- 		<module>modules/websocket</module> -->
-<!-- 		<module>modules/openfire</module> -->
-<!-- 		<module>modules/securityOpenfire</module> -->
-		<!-- 
-		<module>modules/js</module>
-		
-		 -->
-		<!-- 
-		<module>modules/exchange</module>
-		<module>modules/context</module>
-		
-		<module>modules/job</module>
-		<module>modules/query</module> -->
-		<module>modules/core</module>
-	</modules>
 
 	<build>
 		<plugins>
@@ -643,4 +604,10 @@
 		</pluginManagement>
 	</build>
 	
+	<modules>
+		<module>modules/core</module>
+		<module>modules/context</module>
+		<module>modules/services</module>
+		<module>modules/ui</module>
+	</modules>
 </project>
